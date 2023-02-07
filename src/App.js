@@ -4,6 +4,7 @@ import { supabase } from './supabaseClient'
 import Auth from './Auth'
 import Account from './Account'
 import AddWord from './AddWord'
+import Homepage from './Homepage'
 
 export default function App() {
   const [session, setSession] = useState(null)
@@ -22,7 +23,8 @@ export default function App() {
   return (
     <div className="container" style={{ padding: '50px 0 100px 0' }}>
       {/* {!session ? <Auth /> : <Account key={session.user.id} session={session} />} */}
-      {!session ? <Auth /> : <AddWord key={session.user.id} session={session} />}
+      {/* {!session ? <Auth /> : <AddWord key={session.user.id} session={session} />} */}
+      <Homepage/>
     </div>
   )
 }

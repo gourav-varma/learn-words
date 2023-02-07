@@ -1,49 +1,49 @@
-import { useState, useEffect } from 'react'
-import { supabase } from './supabaseClient'
+import { useState, useEffect } from "react";
+import { supabase } from "./supabaseClient";
 
 const Account = ({ session }) => {
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState(null)
-  const [website, setWebsite] = useState(null)
-  const [avatar_url, setAvatarUrl] = useState(null)
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState(null);
+  const [website, setWebsite] = useState(null);
+  const [avatar_url, setAvatarUrl] = useState(null);
 
   useEffect(() => {
-    getProfile()
-  }, [session])
+    getProfile();
+  }, [session]);
 
   const getProfile = async () => {
     try {
-      setLoading(true)
-      const { user } = session
+      setLoading(true);
+      const { user } = session;
 
       let { data, error, status } = await supabase
-        .from('profiles')
+        .from("profiles")
         .select(`username, website, avatar_url`)
-        .eq('id', user.id)
-        .single()
+        .eq("id", user.id)
+        .single();
 
       if (error && status !== 406) {
-        throw error
+        throw error;
       }
 
       if (data) {
-        setUsername(data.username)
-        setWebsite(data.website)
-        setAvatarUrl(data.avatar_url)
+        setUsername(data.username);
+        setWebsite(data.website);
+        setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const updateProfile = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      setLoading(true)
-      const { user } = session
+      setLoading(true);
+      const { user } = session;
 
       const updates = {
         id: user.id,
@@ -51,24 +51,24 @@ const Account = ({ session }) => {
         website,
         avatar_url,
         updated_at: new Date(),
-      }
+      };
 
-      let { error } = await supabase.from('profiles').upsert(updates)
+      let { error } = await supabase.from("profiles").upsert(updates);
 
       if (error) {
-        throw error
+        throw error;
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div aria-live="polite">
       {loading ? (
-        'Saving ...'
+        "Saving ..."
       ) : (
         <form onSubmit={updateProfile} className="form-widget">
           <div>Email: {session.user.email}</div>
@@ -77,7 +77,7 @@ const Account = ({ session }) => {
             <input
               id="username"
               type="text"
-              value={username || ''}
+              value={username || ""}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -86,7 +86,7 @@ const Account = ({ session }) => {
             <input
               id="website"
               type="url"
-              value={website || ''}
+              value={website || ""}
               onChange={(e) => setWebsite(e.target.value)}
             />
           </div>
@@ -97,11 +97,15 @@ const Account = ({ session }) => {
           </div>
         </form>
       )}
-      <button type="button" className="button block" onClick={() => supabase.auth.signOut()}>
+      <button
+        type="button"
+        className="button block"
+        onClick={() => supabase.auth.signOut()}
+      >
         Sign Out
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Account
+export default Account;
