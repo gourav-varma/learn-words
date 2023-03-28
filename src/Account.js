@@ -27,7 +27,8 @@ const Account = ({ session }) => {
       }
 
       if (data) {
-        setUsername(data.username);
+        // testing
+        setUsername(data.username); 
         setWebsite(data.website);
         setAvatarUrl(data.avatar_url);
       }
